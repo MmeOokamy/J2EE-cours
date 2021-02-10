@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+#calculBox{
+	display: flex;
+	background-color: blue;
+}
+
+#touches{
+	margin: 2px;
+	align-items: center;
+	justify-content: space-around;
+}

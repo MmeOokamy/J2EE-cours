@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="jquery/jquery-3.5.1.min.js"></script>
+<meta charset="UTF-8">
+<title>page pays</title>
+<script>
+	function ajaxOne() {
+		$.ajax({
+			url : "iso?code=" + $("#codePays").val(),
+			method : "get",
+			success : function(data, status, jqXHR) {
+				traiterReponse(data);
+			},
+			error : function(jqXHR, status, error) {
+				alert(error);
+			}
+		})
+	}
+
+	function traiterReponse(data) {
+		if (data.response.status == "ok") {
+			$("#nomPays").val(data.response.result.name);
+			console.log(data);
+		} else {
+			alert(data.response.message);
+		}
+	}
+
+	function ajaxAll() {
+		$.ajax({
+			url : "all",
+			method : "get",
+			success : function(data, status, jqXHR) {
+				console.log("pff");
+				if (data.response.status == "ok") {
+					
+					console.log(data);
+
+					for (i = 0; i < 2; i++) {
+						console.log(i);
+					}
+
+					console.log(data.response.result.name);
+
+				} else {
+					alert(data.response.message);
+				}
+
+			},
+			error : function(jqXHR, status, error) {
+				alert(error);
+			}
+		})
+	}
+
+	function allReponse(data) {
+		if (data.response.status == "ok") {
+			for (i = 0; i < data.length; i++) {
+
+				console.log("all rep");
+			}
+
+		} else {
+			alert(data.response.message);
+		}
+	}
+</script>
+</head>
+<body>
+	<h1>Version Ajax / jquery</h1>
+
+	<div id="pays">
+		<div>
+			<input type="text" id="codePays" value="" /> <input type="button"
+				value="OK" onclick="ajaxOne()" /> <input type="text" id="nomPays"
+				value="" />
+		</div>
+
+		<hr>
+
+		<div>
+			<input type="button" value="All" onclick="ajaxAll()" />
+			<ul>
+				<li class="paysList"><input type="text" value=""></li>
+			</ul>
+
+		</div>
+
+
+
+
+
+	</div>
+
+
+</body>
+</html>
