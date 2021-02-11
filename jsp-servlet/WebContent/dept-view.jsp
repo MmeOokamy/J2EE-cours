@@ -15,12 +15,6 @@ Departement dept = (Departement) request.getAttribute("dept");
 <title>Servlet View</title>
 <script type="text/javascript">
 function delete(){
-	if(confirm("Supprimer? etes vous sure?")){
-		document.getElementById(frm).action=?btnDelete;
-		document.getElementById(frm).submit();
-		
-	}
-}
 
 
 </script>

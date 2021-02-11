@@ -41,24 +41,24 @@ public class DeptBTNController extends HttpServlet {
 
 		factory = (EntityManagerFactory) getServletContext().getAttribute("factory");
 		em = factory.createEntityManager();
-		
+
 		if(request.getParameter("btnAdd") != null) {
 			System.out.println("choucroute");
 			dept = new Departement();
 		}
-		
+
 		if(request.getParameter("btnDelete") != null) {
 			dept = em.find(Departement.class, request.getParameter("noDept"));
 			em.getTransaction().begin();
 			em.remove(dept);
 			em.getTransaction().commit();
 		}
-		
+
 		if(request.getParameter("btnSave") != null) {
-			
+
 			int noRegion = Integer.parseInt(request.getParameter("noRegion"));
 			region = em.find(Region.class, noRegion);
-			
+
 			dept.setNoDept(request.getParameter("noDept"));
 			dept.setNoRegion(noRegion);
 			dept.setRegion(region);
@@ -67,15 +67,14 @@ public class DeptBTNController extends HttpServlet {
 			dept.setSurface(Integer.parseInt(request.getParameter("surface")));
 			dept.setNbHabitants(Integer.parseInt(request.getParameter("nbHabitants")));
 			dept.setUrlWiki(request.getParameter("url_wiki"));
-			
+
 			em.getTransaction().begin();
 			em.persist(dept);
 			em.getTransaction().commit();
-			
-			
+
 		}
-		
-		if(request.getParameter("code") != null) {
+
+		if(request.getParameter(code) != null) {
 			code = request.getParameter("code");
 			dept = em.find(Departement.class, code);
 			if(dept == null) {
@@ -83,10 +82,10 @@ public class DeptBTNController extends HttpServlet {
 			}
 		}
 
-		
+
 		request.setAttribute("dept", dept);
 		request.getRequestDispatcher("dept-view.jsp").forward(request, response);
-		
+
 	}
 
 	/**
@@ -95,17 +94,17 @@ public class DeptBTNController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		factory = (EntityManagerFactory) getServletContext().getAttribute("factory");
 		em = factory.createEntityManager();
-		
-		
+
+
 		if(request.getParameter("code") != null) {
 			code = request.getParameter("code");
 			dept = em.find(Departement.class, code);
 		}
 
-		
+
 		request.setAttribute("dept", dept);
 		request.getRequestDispatcher("dept-view.jsp").forward(request, response);
 	}
-	
+
 
 }
