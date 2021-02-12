@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -28,7 +30,10 @@ public class RegionController extends HttpServlet {
 	private EntityManager em;
 	private Region region;
 	private String code;
+	private Integer choixRegion, noRegion, surface;
 	private List<Region> regions;
+	private Locale locale;
+	private ResourceBundle lang; 
 	private Query q;
 	
        
@@ -48,6 +53,22 @@ public class RegionController extends HttpServlet {
 		factory = (EntityManagerFactory) getServletContext().getAttribute("factory");
 		em = factory.createEntityManager();
 		
+		locale = new Locale("fr");
+		 if(request.getParameter("btnFr") != null) {
+			 locale = new Locale("fr");
+		 }
+		 if(request.getParameter("btnEn") != null) {
+			 locale = new Locale("en");
+		 }
+		 if(request.getParameter("btnIt") != null) {
+			 locale = new Locale("it");
+		 }
+		 if(request.getParameter("btnDe") != null) {
+			 locale = new Locale("de");
+		 }
+	
+		lang = ResourceBundle.getBundle("labels", locale);
+		
 		q = em.createQuery("select r from Region r ");
 		regions =  (List<Region>) q.getResultList();
 
@@ -58,36 +79,45 @@ public class RegionController extends HttpServlet {
 				region = new Region();
 		}
 		
+		if(request.getParameter("choixRegion") != null && request.getParameter("choixRegion") != "" ) {
+			choixRegion = Integer.parseInt(request.getParameter("choixRegion"));
+			region = em.find(Region.class, choixRegion);
+		} 
 
-		request.setAttribute("region", region);
-		request.setAttribute("listRegion", regions);
-		
-		request.getRequestDispatcher("regionView.jsp").forward(request, response);
-
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("btnAdd") != null) {
-			
 			region = new Region();
 		}
 		
 		if(request.getParameter("btnDelete") != null) {
-			region = em.find(Region.class, request.getParameterValues("noRegion"));
+			
+			noRegion = Integer.parseInt(request.getParameter("noRegion"));
+			region = em.find(Region.class, noRegion);
+			
 			em.getTransaction().begin();
 			em.remove(region);
 			em.getTransaction().commit();
 		}
 		
 		if(request.getParameter("btnSave") != null) {
-			
-			int noRegion = Integer.parseInt(request.getParameter("noRegion"));
-			int surface = Integer.parseInt(request.getParameter("surfaceRegion"));
+			/**
+			 * 
+			 * choixRegion=&
+			 * noRegion=666&
+			 * nomRegion=HightWay++to+hell&
+			 * surfaceRegion=5649&
+			 * descriptionRegion=ijzrghuetblmkgub+qejh+gnull&
+			 * wikiRegion=http%3A%2F%2F&
+			 * btnAdd=Ajouter
+			 * 
+			 * 
+			 */
+			noRegion = Integer.parseInt(request.getParameter("noRegion"));
+			surface = Integer.parseInt(request.getParameter("surfaceRegion"));
 			
 			region = em.find(Region.class, noRegion);
+			if(region == null) {
+				region = new Region();
+			}
 			
 			region.setNoRegion(noRegion);
 			region.setNom(request.getParameter("nomRegion"));
@@ -99,14 +129,24 @@ public class RegionController extends HttpServlet {
 			em.getTransaction().begin();
 			em.persist(region);
 			em.getTransaction().commit();
-			
-			
+
 		}
 		
-		q = em.createQuery("select r from Region r ");
-		regions =  (List<Region>) q.getResultList();
+
+		request.setAttribute("region", region);
 		request.setAttribute("listRegion", regions);
-		request.getRequestDispatcher("regionView.jsp").forward(request, response);
+		request.setAttribute("lang", lang);
+		//request.getRequestDispatcher("regionView.jsp").forward(request, response);
+		request.getRequestDispatcher("regionViewB.jsp").forward(request, response);
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+
 	}
 
 }

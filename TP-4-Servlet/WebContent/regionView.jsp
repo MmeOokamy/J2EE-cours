@@ -16,7 +16,7 @@ List<Region> regions = (List<Region>) request.getAttribute("listRegion");
 <script src="public/js/jquery-3.5.1.min.js"></script>
 
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Region Vue initial</title>
 </head>
 <body>
 	<h1>Région</h1>
@@ -38,11 +38,18 @@ List<Region> regions = (List<Region>) request.getAttribute("listRegion");
 		
 		<div class="ligne">
 			<label class="pwet">Choix d'une Région :</label> 
-				<select class="item" id="" name="nom">
-				<% Iterator<Region> it = regions.iterator();
-						while (it.hasNext()) { %>
-						<option><%=it.next()%></option>
-						<%}%>
+				<select class="item" id="choixRegion" name="choixRegion">
+				<option></option>
+					<!-- avec iterator -->
+<%-- 						<% Iterator<Region> it = regions.iterator(); --%>
+<%-- 						while (it.hasNext()) { %> --%>
+<%-- 						<option><%=it.next()%></option> --%>
+<%-- 						<%}%> --%>
+						
+					<!-- avec for -->
+						<%for(Region r : regions){ %>
+						<option value="<%= r.getNoRegion() %>"> <%= r.getNom() %></option>
+						<% } %>
 				</select>
 		</div>
 				

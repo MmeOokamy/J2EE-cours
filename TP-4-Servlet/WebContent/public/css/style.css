@@ -32,22 +32,32 @@ h1 {
 .img{
 	display: flex;
 	justify-content: space-around;
-	align-content: space-around;	
-	padding: 5px;
+	align-content: space-around;
+		
 }
 
-img{
+button{
+	background-color: rgba(255, 255, 255, 0);
+	border: none;
+	opacity: 0.5;
+}
+
+button:hover {
+	opacity:1;
+}
+
+.img img{
 	width: 100px;
 	height: 60px;
 	border-radius: 50%;
+	
 }
 
 
 
 #btn{
 	display: flex;
-	justify-content: space-around;	
-	align-content: center;
+	justify-content: space-around;		
 }
 
 .btn{
@@ -79,6 +89,7 @@ input, textarea {
 }
 
 .ligne{
+	width: auto;
 	display: flex;
 	justify-content: space-between;
 	align-content: center;
